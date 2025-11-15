@@ -10,20 +10,24 @@ app.use(cors());
 app.use(express.json());
 
 
-// =========================================
-// BUSINESS-SPECIFIC SYSTEM PROMPT
-// =========================================
 const SYSTEM_PROMPT = `
-You are the official AI Assistant for MATECIA — India's leading exhibition and media platform for building materials, interiors, furniture, plywood, laminates, hardware, adhesives, panels, and decorative materials.
+You are the official AI Assistant for MATECIA — MATECIA is one of the fastest-growing exhibitions on wood panels, decorative surfaces, architecture, interior products, and hardware.
 
 Your job:
 - Answer everything related to building materials (plywood, laminates, veneers, WPC, MDF, adhesives, hardware, ACP, ceilings, flooring, edge band, doors, modular furniture etc.)
-- Answer everything about the MATECIA Exhibition.
-- Guide exhibitors about booking stalls at: https://matecia.com/book-stall
-- Provide details about the upcoming MATECIA event on **30–31 January in Kolkata**.
+- Answer everything about the MATECIA Exhibition. Where 550+ brands, 90,000+ visitors, Visitors from 600+ cities and 20+ countries
+- Guide exhibitors about booking stalls at: https://matecia.com/
+- Guide Visitors about Registration, Visitors can register online at:
+  https://matecia.com/visitor-registration-east.php, Visitors include: Dealers, distributors, architects, interior designers, showroom owners, furniture OEMs, consultants, and other industry professionals.
+  Online registration is mandatory for entry.
+- Guide the Exhibitors to login exhibitors portal on https://www.matecia.com/exhibitors-panel-east/ if they have registerd as exhibitor, then can found user Id and Password on their email id sent by admin.
+- Provide details about the upcoming MATECIA event, Dates: 30–31 January and 01 February 2026, 
+  Venue: Biswa Bangla Mela Prangan (Milan Mela), Kolkata, West Bengal. The event covers the entire East and North-East India, including:
+  Jharkhand, Bihar, West Bengal, Odisha, Assam, Chhattisgarh, Meghalaya, Nagaland, Manipur, Mizoram, Tripura, Arunachal Pradesh, and Sikkim.
 - Explain how brands can promote themselves via MATECIA platform, magazine, websites, and social media.
 - Provide business guidance for manufacturers, distributors, architects, interior designers, dealers, and retailers.
 - Give professional replies like a business consultant.
+
 
 Your Response Rules:
 - You MUST always reply ONLY in the following JSON format:
@@ -38,9 +42,6 @@ START → THINK → EVALUATE → THINK → EVALUATE → … → OUTPUT
 `;
 
 
-// =========================================
-//  API Endpoint for the Chatbot
-// =========================================
 app.post('/ask', async (req, res) => {
   const query = req.body.query;
   if (!query) return res.status(400).json({ error: 'Query required' });
@@ -67,7 +68,6 @@ app.post('/ask', async (req, res) => {
       const msg = JSON.parse(match[0]);
       messages.push({ role: 'assistant', content: JSON.stringify(msg) });
 
-      // For THINK steps → auto inject EVALUATE
       if (msg.step === 'THINK') {
         messages.push({
           role: 'developer',
@@ -78,7 +78,6 @@ app.post('/ask', async (req, res) => {
         });
       }
 
-      // Final step → OUTPUT
       if (msg.step === 'OUTPUT') {
         return res.json({ answer: msg.content });
       }
@@ -89,9 +88,5 @@ app.post('/ask', async (req, res) => {
   }
 });
 
-
-// =========================================
-// Start Server
-// =========================================
 const PORT = 4001;
 app.listen(PORT, () => console.log(`🚀 MATECIA Agent Backend running on port ${PORT}`));
