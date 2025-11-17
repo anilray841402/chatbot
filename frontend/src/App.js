@@ -137,7 +137,11 @@ function App() {
               <div className="message-avatar">
                 {msg.role === "bot" ? (
                   <div className="bot-avatar">
-                    <Bot size={20} />
+                    <img 
+                      src="/matecia-icon.png" 
+                      alt="Bot" 
+                      className="bot-icon"
+                    />
                   </div>
                 ) : (
                   <div className="user-avatar">
@@ -158,7 +162,11 @@ function App() {
             <div className="message bot">
               <div className="message-avatar">
                 <div className="bot-avatar">
-                  <Bot size={20} />
+                  <img 
+                    src="/matecia-icon.png" 
+                    alt="Bot" 
+                    className="bot-icon"
+                  />
                 </div>
               </div>
               <div className="message-content">
@@ -355,14 +363,21 @@ function App() {
         }
 
         .bot-avatar {
-          width: 40px;
-          height: 40px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          width: 45px;
+          height: 45px;
+          background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           color: white;
+          overflow: hidden;
+        }
+
+        .bot-icon {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
 
         .user-avatar {
